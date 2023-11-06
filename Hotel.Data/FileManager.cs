@@ -4,12 +4,30 @@ public enum RoomType { Single, Double, Suite, Deluxe };
 
 public static class FileManager
 {
+    public static string FindFile(string fileName)
+    {
+        var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
+        while (true)
+        {
+            var testPath = Path.Combine(directory.FullName, fileName);
+            if (File.Exists(testPath))
+            {
+                return testPath;
+            }
+            
+            if (directory.FullName == directory.Root.FullName)
+            {
+                throw new Exception($"I looked for {fileName} in every folder from {Directory.GetCurrentDirectory()} to {directory.Root.FullName} and couldn't find it.");
+            }
+            directory = directory.Parent;
+        }
+    }
 
     public static List<(string name, int cardNumber)> ReadInCustomers(out List<string> currentCustomers)
     {
         List<(string name, int cardNumber)> customers = new();
         currentCustomers = new();
-        string[] linesInCustomerFile = File.ReadAllLines("Customers.txt");
+        string[] linesInCustomerFile = File.ReadAllLines(FindFile("Customers.txt"));
         foreach (string Customer in linesInCustomerFile)
         {
             string[] CustomerParts = Customer.Split(",");
@@ -23,7 +41,7 @@ public static class FileManager
     public static List<(string RsvNumber, DateOnly date, int roomNumber, string name, string payConfirm)> ReadInReservations()
     {
         List<(string RsvNumber, DateOnly date, int roomNumber, string name, string payConfirm)> reservations = new();
-        string[] Reservations = File.ReadAllLines("Reservations.txt");
+        string[] Reservations = File.ReadAllLines(FindFile("Reservations.txt"));
         foreach (string Reservation in Reservations)
         {
             string[] ReservationParts = Reservation.Split(",");
@@ -37,7 +55,7 @@ public static class FileManager
     {
         List<(int roomNumber, RoomType)> rooms = new();
         List<int> availableRooms = new List<int>();
-        foreach (string Room in File.ReadAllLines("Rooms.txt"))
+        foreach (string Room in File.ReadAllLines(FindFile("Rooms.txt")))
         {
             string[] RoomParts = Room.Split(",");
             (int roomNumber, RoomType) RoomInfo = (Convert.ToInt32(RoomParts[0]), getRoomType(RoomParts[1]));
