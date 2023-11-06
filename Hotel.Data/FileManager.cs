@@ -4,6 +4,14 @@ public enum RoomType { Single, Double, Suite, Deluxe };
 
 public static class FileManager
 {
+    /// <summary>
+    /// Look in the current directory and all parent directories for the given file.
+    /// </summary>
+    /// <param name="fileName">The name of the file you want</param>
+    /// <returns>The full path to that file</returns>
+    /// <example>
+    /// string[] linesInCustomerFile = File.ReadAllLines(FindFile("Customers.txt"));
+    /// </example>
     public static string FindFile(string fileName)
     {
         var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
@@ -17,7 +25,7 @@ public static class FileManager
             
             if (directory.FullName == directory.Root.FullName)
             {
-                throw new Exception($"I looked for {fileName} in every folder from {Directory.GetCurrentDirectory()} to {directory.Root.FullName} and couldn't find it.");
+                throw new FileNotFoundException($"I looked for {fileName} in every folder from {Directory.GetCurrentDirectory()} to {directory.Root.FullName} and couldn't find it.");
             }
             directory = directory.Parent;
         }
