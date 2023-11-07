@@ -4,9 +4,9 @@
     {
         Console.WriteLine("Hello, World!");
 
-        Hotel.Logic.CurrentData.LoadData();
+        Hotel.Logic.HotelManager.LoadData();
 
-        foreach (var item in Hotel.Logic.CurrentData.RoomList)
+        foreach (var item in Hotel.Logic.HotelManager.RoomList)
         {
             Console.WriteLine($"{item.roomNumber} {item.type}");
         }
