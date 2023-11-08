@@ -31,8 +31,6 @@ public static class DataManager
         }
     }
 
-
-
 //READ FILE SECTION
     public static List<(string name, int cardNumber)> ReadInCustomers()
     {
@@ -98,26 +96,13 @@ public static class DataManager
         //TODO: Don't throw this exception, implement the method like you did in WriteCustomers()
         throw new NotImplementedException();
     }
-
-
     
-//ENUM Assistance Section
-    static RoomType getRoomType(string input)
+    public static RoomType ParseRoomType(string input)
     {
-        RoomType TheRoom = RoomType.Single;
-        if (input == "Deluxe")
+        if(Enum.TryParse<RoomType>(input, out RoomType roomType))
         {
-            TheRoom = RoomType.Deluxe;
+            return roomType;    
         }
-        else if (input == "Double")
-        {
-            TheRoom = RoomType.Double;
-        }
-        else if (input == "Suite")
-        {
-            TheRoom = RoomType.Suite;
-        }
-        return TheRoom;
+        throw new Exception("Unrecognized room type");
     }
-
 }
